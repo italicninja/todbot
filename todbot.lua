@@ -7,7 +7,7 @@ addon.name = 'todbot'
 addon.author = 'gnubeardo'
 addon.version = '1.0'
 addon.desc = 'posts TOD of NMs to a Discord webhook'
-addon.link = ''
+addon.link = 'https://github.com/ErikDahlinghaus/todbot'
 
 local function sendToDiscordWebhook(message)
     --[[
