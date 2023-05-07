@@ -1,4 +1,5 @@
 require('common')
+local settings = require('settings')
 local http = require("socket.http")
 local https = require("socket.ssl.https")
 local json = require("json")
@@ -9,13 +10,15 @@ addon.version = '1.0'
 addon.desc = 'posts TOD of NMs to a Discord webhook'
 addon.link = 'https://github.com/ErikDahlinghaus/todbot'
 
+local default_settings = T{
+    webhookURL = "https://discord.com/api/webhooks/<yourwebhook>"
+}
+
+local todbot = T{
+    settings = settings.load(default_settings)
+}
+
 local function sendToDiscordWebhook(message)
-    --[[
-        TODO: Move this to a setting and persist it PRIORITY
-        Potentially add a UI for adding it but low priority
-    ]]
-    local webhookURL = "https://discord.com/api/webhooks/yourhook"
-    
     local payload = {
         username = "todbot",
         content = message
@@ -29,7 +32,7 @@ local function sendToDiscordWebhook(message)
     
     local response_body = {}
     local response_code, response_headers, response_status = https.request{
-        url = webhookURL,
+        url = todbot.settings.webhookURL,
         method = "POST",
         headers = headers,
         source = ltn12.source.string(body),
@@ -130,6 +133,18 @@ ashita.events.register('packet_in', 'death_animation', function (e)
         end
 
         local message = string.format("%s: <t:%d:T> <t:%d:R>", name, timestamp, timestamp)
-        sendToDiscordWebhook(message)
+        ashita.tasks.once(0, function()
+            sendToDiscordWebhook(message)
+        end)
+    end
+end)
+
+ashita.events.register('load', 'load_cb', function()
+    if string.find(todbot.settings.webhookURL, "yourwebhook") then
+        print("Your webhook URL is missing")
+        print("You must put your webhook URL in settings.lua")
+        print("Settings located in config\\addons\\todbot\\<Username_####>\\settings.lua")
+        error("you must put your actual webhook URL in")
+        settings.save()
     end
 end)
