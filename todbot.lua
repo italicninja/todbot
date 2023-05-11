@@ -3,10 +3,10 @@ local settings = require('settings')
 local http = require("socket.http")
 local https = require("socket.ssl.https")
 local json = require("json")
-local imgui = require('imgui');
-local chat = require('chat');
+local chat = require('chat')
 
 local nm_list = require('nm_list')
+local gui = require("gui")
 
 addon.name = 'todbot'
 addon.author = 'gnubeardo'
@@ -22,6 +22,7 @@ local default_settings = T{
 local todbot = T{
     settings = settings.load(default_settings)
 }
+register_gui(todbot)
 
 local function sendToDiscordWebhook(message, webhook_url, avatar_url)
     local payload = {
@@ -166,12 +167,13 @@ ashita.events.register('packet_in', 'death_animation', function (e)
 end)
 
 ashita.events.register('load', 'load_cb', function()
-    if (todbot.settings.webhookURL == "") then
+    if (todbot.settings.webhookURL == nil or todbot.settings.webhookURL == '') then
         settings.save()
         print(chat.header('todbot') .. chat.error("Your webhook URL is missing"))
         print(chat.header('todbot') .. chat.error("You must put your webhook URL in settings.lua"))
         print(chat.header('todbot') .. chat.error("Settings located in config\\addons\\todbot\\<Username_####>\\settings.lua"))
         print(chat.header('todbot') .. chat.error("you must put in your actual webhook URL"))
+        error('todbot will be unloaded')
     end
 end)
 
@@ -182,8 +184,7 @@ ashita.events.register('command', 'command_cb', function(e)
     local command_args = e.command:lower():args()
     if table.contains({'/todbot'}, command_args[1]) then
         if table.contains({'config'}, command_args[2]) then
-            print(chat.header('todbot') .. chat.message(todbot.settings.webhookURL))
-            print(chat.header('todbot') .. chat.message(todbot.settings.avatarURL))
+            gui.is_open[1] = not gui.is_open[1]
         else
             print(chat.header('todbot') .. chat.message(todbot.settings.webhookURL))
             print(chat.header('todbot') .. chat.message(todbot.settings.avatarURL))
