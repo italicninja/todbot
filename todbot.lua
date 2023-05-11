@@ -170,15 +170,15 @@ ashita.events.register('load', 'load_cb', function()
     if (todbot.settings.webhookURL == nil or todbot.settings.webhookURL == '') then
         settings.save()
         print(chat.header('todbot') .. chat.error("Your webhook URL is missing"))
-        print(chat.header('todbot') .. chat.error("You must put your webhook URL in settings.lua"))
-        print(chat.header('todbot') .. chat.error("Settings located in config\\addons\\todbot\\<Username_####>\\settings.lua"))
-        print(chat.header('todbot') .. chat.error("you must put in your actual webhook URL"))
-        error('todbot will be unloaded')
+        print(chat.header('todbot') .. chat.error("todbot settings are located in config\\addons\\todbot\\<Username_####>\\settings.lua"))
+        print(chat.header('todbot') .. chat.error("You can also update your settings with /todbot config"))
+        print(chat.header('todbot') .. chat.error("If you do not set a webhookURL the bot will not post to discord"))
     end
 end)
 
--- ashita.events.register('unload', 'unload_cb', function()
--- end)
+ashita.events.register('unload', 'unload_cb', function()
+    settings.save()
+end)
 
 ashita.events.register('command', 'command_cb', function(e)
     local command_args = e.command:lower():args()
