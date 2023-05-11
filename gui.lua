@@ -56,10 +56,9 @@ function render_monster_tod_popup(todbot)
     end
 
     local recent_monsters = deepCopy(todbot.recent_monsters)
-
-    for i, monster in ipairs(recent_monsters) do
-        imgui.SetNextWindowSize({ -1, -1 })
-        if (imgui.Begin('monster_tod##' .. i, monster_tod_open)) then
+    imgui.SetNextWindowSize({ -1, -1 })
+    if (imgui.Begin('monster_tod', monster_tod_open)) then
+        for i, monster in ipairs(recent_monsters) do
             imgui.Text(monster.name)
             imgui.SameLine()
             local pt_format = "%Y-%m-%d %H:%M:%S %Z"
@@ -77,9 +76,10 @@ function render_monster_tod_popup(todbot)
             if( imgui.Button("Dismiss") ) then
                 table.remove(todbot.recent_monsters, i)
             end
+            imgui.Separator()
         end
-        imgui.End()
     end
+    imgui.End()
 end
 
 function register_gui(todbot)
