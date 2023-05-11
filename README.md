@@ -11,5 +11,9 @@ When a monster disappears a menu will pop up showing the monster name, TOD, and 
 
 ![PostMessage](readme/post_message.png)
 
+Currently all monsters that die generate a pop up. In the future it will only generate a popup for NMs or user configure monsters.
+
 ## Bugs
-See `TODO`s in [todbot.lua](todbot.lua)
+- An event is triggered when morning despawns night mobs
+- An event is triggered when avatars are despawned
+- For more, see `TODO`s in [todbot.lua](todbot.lua)
