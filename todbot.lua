@@ -109,24 +109,29 @@ ashita.events.register('packet_in', 'death_animation', function (e)
         end
 
         --[[
-            Debug output for a while in Pacific time
+            Debug output
         ]]
-        local pt_time = timestamp
-        local pt_format = "%Y-%m-%d %H:%M:%S %Z"
-        local pt_timestamp = os.date(pt_format, pt_time)
-        local print_message = string.format("%s: %s", name, pt_timestamp)
+        local timestamp_format = "%Y-%m-%d %H:%M:%S %Z"
+        local timestamp_string = os.date(timestamp_format, timestamp)
+        local print_message = string.format("%s: %s", name, timestamp_string)
         print(chat.header('todbot') .. chat.message(print_message));
         
+        -- gui.lua uses todbot.recent_monsters to create a UI element
         table.insert(todbot.recent_monsters, {name = name, timestamp = timestamp})
 
-        if( detectMobInListByName(name, nm_list) == false ) then
-            return
-        end
+        --[[
+            This is stub code for only announcing when the mob name is in a list
+            I have a list of NMs in nm_list.lua but I would also like for
+            users to be able to configure their own lists.
+        ]]
+        -- if( detectMobInListByName(name, nm_list) == false ) then
+        --     return
+        -- end
 
-        local message = string.format("%s: <t:%d:T> <t:%d:R> ", name, timestamp, timestamp)
-        ashita.tasks.once(0, function()
-            sendToDiscordWebhook(message, todbot.settings.webhookURL, todbot.settings.avatarURL)
-        end)
+        -- local message = string.format("%s: <t:%d:T> <t:%d:R> ", name, timestamp, timestamp)
+        -- ashita.tasks.once(0, function()
+        --     sendToDiscordWebhook(message, todbot.settings.webhookURL, todbot.settings.avatarURL)
+        -- end)
     end
 end)
 
