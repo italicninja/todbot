@@ -3,6 +3,10 @@ local settings = require('settings')
 local http = require("socket.http")
 local https = require("socket.ssl.https")
 local json = require("json")
+local imgui = require('imgui');
+local chat = require('chat');
+
+local nm_list = require('nm_list')
 
 addon.name = 'todbot'
 addon.author = 'gnubeardo'
@@ -11,17 +15,19 @@ addon.desc = 'posts TOD of NMs to a Discord webhook'
 addon.link = 'https://github.com/ErikDahlinghaus/todbot'
 
 local default_settings = T{
-    webhookURL = "https://discord.com/api/webhooks/<yourwebhook>"
+    webhookURL = "",
+    avatarURL = ""
 }
 
 local todbot = T{
     settings = settings.load(default_settings)
 }
 
-local function sendToDiscordWebhook(message)
+local function sendToDiscordWebhook(message, webhook_url, avatar_url)
     local payload = {
         username = "todbot",
-        content = message
+        content = message,
+        avatar_url = avatar_url
     }
     local body = json.encode(payload)
 
@@ -32,7 +38,7 @@ local function sendToDiscordWebhook(message)
     
     local response_body = {}
     local response_code, response_headers, response_status = https.request{
-        url = todbot.settings.webhookURL,
+        url = webhook_url,
         method = "POST",
         headers = headers,
         source = ltn12.source.string(body),
@@ -74,11 +80,22 @@ local function GetEntityByServerId(sid)
     return nil
 end
 
+
 --[[
-    TODO: This is a stub for detecting an NM so we only post NM TODs
+    with a list that looks like
+    T{
+        {mobid = 123445, mobname = "name"}
+    }
+    should return the record if the name matches
+    otherwise return false
 ]]
-local function detectNM(entity)
-    return true
+local function detectMobInListByName(name, list)
+    for i, mob in ipairs(list) do
+        if mob.mobname == name then
+          return mob
+        end
+    end
+    return false
 end
 
 ashita.events.register('packet_in', 'death_animation', function (e)
@@ -128,23 +145,49 @@ ashita.events.register('packet_in', 'death_animation', function (e)
             name = entity.Name
         end
 
-        if( detectNM(entity) == false ) then
+        --[[
+            Debug output for a while in Pacific time
+        ]]
+        local pt_time = timestamp
+        local pt_format = "%Y-%m-%d %H:%M:%S %Z"
+        local pt_timestamp = os.date(pt_format, pt_time)
+        local print_message = string.format("%s: %s", name, pt_timestamp)
+        print(chat.header('todbot') .. chat.message(print_message));
+
+        if( detectMobInListByName(name, nm_list) == false ) then
             return
         end
 
-        local message = string.format("%s: <t:%d:T> <t:%d:R>", name, timestamp, timestamp)
+        local message = string.format("%s: <t:%d:T> <t:%d:R> ", name, timestamp, timestamp)
         ashita.tasks.once(0, function()
-            sendToDiscordWebhook(message)
+            sendToDiscordWebhook(message, todbot.settings.webhookURL, todbot.settings.avatarURL)
         end)
     end
 end)
 
 ashita.events.register('load', 'load_cb', function()
-    if string.find(todbot.settings.webhookURL, "yourwebhook") then
-        print("Your webhook URL is missing")
-        print("You must put your webhook URL in settings.lua")
-        print("Settings located in config\\addons\\todbot\\<Username_####>\\settings.lua")
-        error("you must put your actual webhook URL in")
+    if (todbot.settings.webhookURL == "") then
         settings.save()
+        print(chat.header('todbot') .. chat.error("Your webhook URL is missing"))
+        print(chat.header('todbot') .. chat.error("You must put your webhook URL in settings.lua"))
+        print(chat.header('todbot') .. chat.error("Settings located in config\\addons\\todbot\\<Username_####>\\settings.lua"))
+        print(chat.header('todbot') .. chat.error("you must put in your actual webhook URL"))
     end
+end)
+
+-- ashita.events.register('unload', 'unload_cb', function()
+-- end)
+
+ashita.events.register('command', 'command_cb', function(e)
+    local command_args = e.command:lower():args()
+    if table.contains({'/todbot'}, command_args[1]) then
+        if table.contains({'config'}, command_args[2]) then
+            print(chat.header('todbot') .. chat.message(todbot.settings.webhookURL))
+            print(chat.header('todbot') .. chat.message(todbot.settings.avatarURL))
+        else
+            print(chat.header('todbot') .. chat.message(todbot.settings.webhookURL))
+            print(chat.header('todbot') .. chat.message(todbot.settings.avatarURL))
+        end
+    end
+    return false
 end)
