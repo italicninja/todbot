@@ -18,7 +18,7 @@ function sendToDiscordWebhook(message, webhook_url, avatar_url)
     }
     
     local response_body = {}
-    local response_code, response_headers, response_status = https.request{
+    local response, response_code, response_headers, response_status = https.request{
         url = webhook_url,
         method = "POST",
         headers = headers,
@@ -26,9 +26,10 @@ function sendToDiscordWebhook(message, webhook_url, avatar_url)
         sink = ltn12.sink.table(response_body)
     }
 
-    if( response_code ~= 200 ) then
-        local response_str = table.concat(response_body)
+    if( response_code ~= 204 ) then
+        print(chat.header('todbot') .. chat.error("Response Code: " .. response_code))
         print(chat.header('todbot') .. chat.error("Unable to deliver message " .. message))
-        print(chat.header('todbot') .. chat.error(response_str))
+        local response_str = table.concat(response_body)
+        print(chat.header('todbot') .. chat.error("Response Body: " .. response_str))
     end
 end
