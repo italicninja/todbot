@@ -26,13 +26,6 @@ function render_config_menu(todbot)
         todbot.settings.avatarURL = table.concat(avatarURL)
     end
     imgui.End()
-
-    settings.register('settings', 'settings_update', function (s)
-        if (s ~= nil) then
-            todbot.settings = s
-        end
-        settings.save()
-    end)
 end
 
 function deepCopy(original)

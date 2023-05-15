@@ -22,6 +22,14 @@ local todbot = T{
     settings = settings.load(default_settings),
     recent_monsters = T{}
 }
+
+settings.register('settings', 'settings_update', function (s)
+    if (s ~= nil) then
+        todbot.settings = s
+    end
+    settings.save()
+end)
+
 register_gui(todbot)
 
 
