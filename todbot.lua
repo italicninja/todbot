@@ -8,7 +8,7 @@ require("discord")
 
 addon.name = 'todbot'
 addon.author = 'gnubeardo'
-addon.version = '1.3'
+addon.version = '1.4'
 addon.desc = 'posts TOD of NMs to a Discord webhook'
 addon.link = 'https://github.com/ErikDahlinghaus/todbot'
 
