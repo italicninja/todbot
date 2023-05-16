@@ -56,7 +56,7 @@ function render_monster_tod_popup(todbot)
         end
         imgui.Separator()
 
-        if imgui.BeginTable('##tods', 4, bit.bor(ImGuiTableFlags_RowBg, ImGuiTableFlags_BordersH, ImGuiTableFlags_BordersV, ImGuiTableFlags_ScrollY)) then
+        if imgui.BeginTable('##tods', 3, bit.bor(ImGuiTableFlags_RowBg, ImGuiTableFlags_BordersH, ImGuiTableFlags_BordersV, ImGuiTableFlags_ScrollY)) then
             imgui.TableSetupColumn('Name', ImGuiTableColumnFlags_WidthStretch, 0, 0)
             imgui.TableSetupColumn('TOD', ImGuiTableColumnFlags_WidthFixed, 300, 0)
             imgui.TableSetupColumn('Action', ImGuiTableColumnFlags_WidthFixed, 100, 0)
