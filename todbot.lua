@@ -8,7 +8,7 @@ require("discord")
 
 addon.name = 'todbot'
 addon.author = 'gnubeardo'
-addon.version = '1.2'
+addon.version = '1.3'
 addon.desc = 'posts TOD of NMs to a Discord webhook'
 addon.link = 'https://github.com/ErikDahlinghaus/todbot'
 
@@ -141,16 +141,6 @@ ashita.events.register('packet_in', 'death_animation', function (e)
     end
 end)
 
-ashita.events.register('load', 'load_cb', function()
-    if (todbot.settings.webhookURL == nil or todbot.settings.webhookURL == '') then
-        settings.save()
-        print(chat.header('todbot') .. chat.error("Your webhook URL is missing"))
-        print(chat.header('todbot') .. chat.error("todbot settings are located in config\\addons\\todbot\\<Username_####>\\settings.lua"))
-        print(chat.header('todbot') .. chat.error("You can also update your settings with /todbot config"))
-        print(chat.header('todbot') .. chat.error("If you do not set a webhookURL the bot will not post to discord"))
-    end
-end)
-
 ashita.events.register('unload', 'unload_cb', function()
     settings.save()
 end)
@@ -163,9 +153,13 @@ ashita.events.register('command', 'command_cb', function(e)
         elseif table.contains({'debug'}, command_args[2]) then
             todbot.settings.debug = not todbot.settings.debug
             print(chat.header('todbot') .. chat.message("Debug: " .. tostring(todbot.settings.debug)))
+        elseif table.contains({'insert'}, command_args[2]) then
+            local fake = command_args[3] or "Fake"
+            table.insert(todbot.recent_monsters, {name = fake, timestamp = os.time()})
         else
             print(chat.header('todbot') .. chat.message(todbot.settings.webhookURL))
             print(chat.header('todbot') .. chat.message(todbot.settings.avatarURL))
+            print(chat.header('todbot') .. chat.message("Debug: " .. tostring(todbot.settings.debug)))
         end
     end
     return false
