@@ -59,7 +59,6 @@ function render_monster_tod_popup(todbot)
         if imgui.BeginTable('##tods', 4, bit.bor(ImGuiTableFlags_RowBg, ImGuiTableFlags_BordersH, ImGuiTableFlags_BordersV, ImGuiTableFlags_ScrollY)) then
             imgui.TableSetupColumn('Name', ImGuiTableColumnFlags_WidthStretch, 0, 0)
             imgui.TableSetupColumn('TOD', ImGuiTableColumnFlags_WidthFixed, 300, 0)
-            imgui.TableSetupColumn('Since', ImGuiTableColumnFlags_WidthFixed, 50, 0)
             imgui.TableSetupColumn('Action', ImGuiTableColumnFlags_WidthFixed, 100, 0)
             imgui.TableHeadersRow();
 
@@ -74,11 +73,6 @@ function render_monster_tod_popup(todbot)
                 local pt_format = "%Y-%m-%d %H:%M:%S %Z"
                 local pt_timestamp = os.date(pt_format, monster.timestamp)
                 imgui.Text(pt_timestamp)
-                imgui.TableNextColumn()
-
-                local since_format = "%M:%S"
-                local since = os.date(since_format, os.time() - monster.timestamp)
-                imgui.Text(since)
                 imgui.TableNextColumn()
 
                 if( imgui.Button("Post") ) then
