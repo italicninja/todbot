@@ -89,8 +89,8 @@ function render_monster_tod_popup(todbot)
 
                 imgui.PopID()
             end
+            imgui.EndTable()
         end
-        imgui.EndTable()
     end
     imgui.End()
 end
