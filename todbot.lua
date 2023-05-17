@@ -125,6 +125,8 @@ ashita.events.register('packet_in', 'death_animation', function (e)
             local timestamp_string = os.date(timestamp_format, timestamp)
             local print_message = string.format("%s: %s", name, timestamp_string)
             print(chat.header('todbot') .. chat.message(print_message));
+            local message = string.format("%s: <t:%d:T> <t:%d:R> ", name, timestamp, timestamp)
+            print(chat.header('todbot') .. chat.message(message));
             table.insert(todbot.recent_monsters, {name = name, timestamp = timestamp})
         end
 

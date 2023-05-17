@@ -59,7 +59,7 @@ function render_monster_tod_popup(todbot)
         if imgui.BeginTable('##tods', 3, bit.bor(ImGuiTableFlags_RowBg, ImGuiTableFlags_BordersH, ImGuiTableFlags_BordersV, ImGuiTableFlags_ScrollY)) then
             imgui.TableSetupColumn('Name', ImGuiTableColumnFlags_WidthStretch, 0, 0)
             imgui.TableSetupColumn('TOD', ImGuiTableColumnFlags_WidthFixed, 300, 0)
-            imgui.TableSetupColumn('Action', ImGuiTableColumnFlags_WidthFixed, 100, 0)
+            imgui.TableSetupColumn('Action', ImGuiTableColumnFlags_WidthFixed, 150, 0)
             imgui.TableHeadersRow();
 
             for i, monster in ipairs(recent_monsters) do
@@ -75,8 +75,14 @@ function render_monster_tod_popup(todbot)
                 imgui.Text(pt_timestamp)
                 imgui.TableNextColumn()
 
+                local message = string.format("%s: <t:%d:T> <t:%d:R> ", monster.name, monster.timestamp, monster.timestamp)
+
+                if( imgui.Button("Copy") ) then
+                    ashita.misc.set_clipboard(message)
+                    table.remove(todbot.recent_monsters, i)
+                end
+                imgui.SameLine()
                 if( imgui.Button("Post") ) then
-                    local message = string.format("%s: <t:%d:T> <t:%d:R> ", monster.name, monster.timestamp, monster.timestamp)
                     ashita.tasks.once(0, function()
                         sendToDiscordWebhook(message, todbot.settings.webhookURL, todbot.settings.avatarURL)
                     end)
