@@ -8,9 +8,11 @@ function sendToDiscordWebhook(message, webhook_url, avatar_url)
     if webhook_url == "" then
         print(chat.header('todbot') .. chat.error("WebhookURL is empty, post this message manually"))
         print(chat.header('todbot') .. chat.error(message))
+        print(chat.header('todbot') .. chat.error("Attempting to copy message to clipboard"))
+        ashita.misc.set_clipboard(message)
         return
     end
-    
+
     local payload = {
         username = "todbot",
         content = message,
