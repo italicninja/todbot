@@ -572,6 +572,7 @@ local nm_list = T{
   T{ mobid = 17649784, mobname = "Narasimha" },
   T{ mobid = 17649795, mobname = "Hellion" },
   T{ mobid = 17649818, mobname = "Soulstealer Skullnix" },
-  T{ mobid = 17649822, mobname = "Ose" }
+  T{ mobid = 17649822, mobname = "Ose" },
+  T{ mobid = 17502569, mobname = "Steam Cleaner" }
 }
 return nm_list
