@@ -13,7 +13,7 @@ Use `/todbot debug` to always prompt to post for every monster regardless of NM 
 The NM list is located in [nm_list.lua](nm_list.lua) and can be edited to suit your needs.
 
 ## Usage
-When an NM disappears a menu will pop up showing the monster name, TOD, and buttons to `Post` or `Dismiss` this TOD. Clicking `Post` will post the TOD to Discord with discord compatible timestamps.
+When an NM disappears a menu will pop up showing the monster name, TOD, and buttons to `Copy`, `Post` or `Dismiss` this TOD. Clicking `Post` will post the TOD to Discord with discord compatible timestamps. Clicking `Copy` will copy the timestamp to your clipboard.
 
 ![PostMessage](readme/post_message.png)
 
