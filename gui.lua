@@ -13,24 +13,26 @@ function render_config_menu(todbot)
 
     imgui.SetNextWindowSize({ -1, -1 })
     if (imgui.Begin('todbot', gui.is_open)) then
-        imgui.Text(todbot.settings.webhookURL)
+
+        imgui.NewLine()
+
         local webhookURL = T{ todbot.settings.webhookURL }
         imgui.InputText('webhookURL', webhookURL, 1024)
         todbot.settings.webhookURL = table.concat(webhookURL)
 
         imgui.NewLine()
 
-        imgui.Text(todbot.settings.avatarURL)
+        --imgui.Text(todbot.settings.avatarURL)
         local avatarURL = T{ todbot.settings.avatarURL }
         imgui.InputText('avatarURL', avatarURL, 1024)
         todbot.settings.avatarURL = table.concat(avatarURL)
 
         imgui.NewLine()
 
-        imgui.Text(todbot.settings.autoPost)
+      --  imgui.Text("autoPost")
         local autoPost = T{ todbot.settings.autoPost }
         imgui.Checkbox('autoPost', autoPost, 1024)
-        todbot.settings.autoPost = table.concat(autoPost)
+        todbot.settings.autoPost = autoPost
     end
     imgui.End()
 end
@@ -63,9 +65,10 @@ function render_monster_tod_popup(todbot)
         end
         imgui.Separator()
 
-        if imgui.BeginTable('##tods', 3, bit.bor(ImGuiTableFlags_RowBg, ImGuiTableFlags_BordersH, ImGuiTableFlags_BordersV, ImGuiTableFlags_ScrollY)) then
+        if imgui.BeginTable('##tods', 4, bit.bor(ImGuiTableFlags_RowBg, ImGuiTableFlags_BordersH, ImGuiTableFlags_BordersV, ImGuiTableFlags_ScrollY)) then
             imgui.TableSetupColumn('Name', ImGuiTableColumnFlags_WidthStretch, 0, 0)
             imgui.TableSetupColumn('TOD', ImGuiTableColumnFlags_WidthFixed, 300, 0)
+            imgui.TableSetupColumn('Window', ImGuiTableColumnFlags_WidthFixed, 300, 0)
             imgui.TableSetupColumn('Action', ImGuiTableColumnFlags_WidthFixed, 150, 0)
             imgui.TableHeadersRow();
 
@@ -83,27 +86,51 @@ function render_monster_tod_popup(todbot)
                 imgui.TableNextColumn()
 
                 local message = ""
-                if (monster.window ~= nil) then -- If we know the Repop Window, Add a timestamp
-                    message = string.format("%s: <t:%d:T> <t:%d:R> ", monster.name, monster.timestamp, monster.timestamp, " - Respawn window open in ")
+                -- Check if monster.timestamp is not nil
+                if monster.timestamp ~= nil then
+                    -- Check if monster.window is not nil to add a timestamp
+                    if monster.window ~= nil then
+                        local win_format = "%Y-%m-%d %H:%M:%S %Z"
+                        local win_timestamp = os.date(win_format, (monster.timestamp + monster.window))
+                        imgui.Text(win_timestamp)
+                        -- Format the message with the Repop information
+                        message = string.format("%s: <t:%d:T> <t:%d:R> - Window: <t:%d:R>", monster.name, monster.timestamp, monster.timestamp, (monster.timestamp + monster.window))
+                    else
+                        -- Format the message without the Repop information
+                        message = string.format("%s: <t:%d:T> <t:%d:R>", monster.name, monster.timestamp, monster.timestamp)
+                    end
                 else
-                    message = string.format("%s: <t:%d:T> <t:%d:R> ", monster.name, monster.timestamp, monster.timestamp)
+                    -- Handle the case where monster.timestamp is nil
+                    message = "Error: monster.timestamp is nil"
                 end
 
-                if( imgui.Button("Copy") ) then
+                imgui.TableNextColumn()
+
+                -- Copy button: Copies the 'message' to the clipboard and removes the monster from the list.
+                if imgui.Button("Copy") then
                     ashita.misc.set_clipboard(message)
                     table.remove(todbot.recent_monsters, i)
                 end
+
+                -- SameLine for layout purposes
                 imgui.SameLine()
-                if( imgui.Button("Post") ) then
+
+                -- Post button: Sends the 'message' to a Discord webhook and removes the monster from the list.
+                if imgui.Button("Post") then
                     ashita.tasks.once(0, function()
                         sendToDiscordWebhook(message, todbot.settings.webhookURL, todbot.settings.avatarURL)
                     end)
                     table.remove(todbot.recent_monsters, i)
                 end
+
+                -- SameLine for layout purposes
                 imgui.SameLine()
-                if( imgui.Button("Dismiss") ) then
+
+                -- Dismiss button: Removes the monster from the list without any further action.
+                if imgui.Button("Dismiss") then
                     table.remove(todbot.recent_monsters, i)
                 end
+
 
                 imgui.PopID()
             end

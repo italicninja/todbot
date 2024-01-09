@@ -7,16 +7,16 @@ local gui = require("gui")
 require("discord")
 
 addon.name = 'todbot'
-addon.author = 'gnubeardo'
-addon.version = '1.4'
+addon.author = 'gnubeardo || itallicninja'
+addon.version = '1.5'
 addon.desc = 'posts TOD of NMs to a Discord webhook'
 addon.link = 'https://github.com/ErikDahlinghaus/todbot'
 
 local default_settings = T{
-    webhookURL = "https://discord.com/api/webhooks/1161379788112543794/xy07cOGTxnq30saE-qZYWIqKG8O8s8BxVk5S9k53kqiptjz2aa9fedGA4NfRp33QS--z",
+    webhookURL = "",
     avatarURL = "",
     debug = false,
-    autopost = false
+    autoPost = false
 }
 
 local todbot = T{
@@ -53,11 +53,16 @@ local function GetEntityByServerId(sid)
     return nil
 end
 
+local function debugPrint(message)
+    if todbot.settings.debug then
+        print(chat.header('[todbot][Debug]') .. chat.message(message))
+    end
+end
 
 --[[
     with a list that looks like
     T{
-        {mobid = 123445, mobname = "name"}
+        {mobid = 123445, mobname = "name", window = 124}
     }
     should return the record if the name matches
     otherwise return false
@@ -65,9 +70,11 @@ end
 local function detectMobInListByName(name, list)
     for i, mob in ipairs(list) do
         if mob.mobname == name then
-          return mob
+            debugPrint(mob.mobname)
+            return mob
         end
     end
+    debugPrint("No mob in list detected by name.")
     return false
 end
 
@@ -88,6 +95,7 @@ ashita.events.register('packet_in', 'death_animation', function (e)
         local animation = struct.unpack('c4', e.data_modified, 0x0C + 0x01) -- kesu
         local mobIndex = struct.unpack('H', e.data_modified, 0x18 + 0x01)
         local mobID = struct.unpack('I', e.data_modified, 0x04 + 0x01)
+        local mobWindow = 100
 
         --[[
             This animation name is usually either "deru" which means "spawning" and
@@ -114,9 +122,14 @@ ashita.events.register('packet_in', 'death_animation', function (e)
 
         local entity = GetEntityByServerId(mobID)
         local name = string.format("MobID `%d`", mobID)
-        if( entity ~= nil ) then
+        if entity ~= nil then
             name = entity.Name
+            if type(detectMobInListByName(name, nm_list)) ~= "boolean" then
+                mobWindow = detectMobInListByName(name, nm_list).window
+                debugPrint("'mobWindow' set to " .. mobWindow .. "for " .. name)
+            end
         end
+        --
 
         --[[
             Debug output
@@ -125,10 +138,11 @@ ashita.events.register('packet_in', 'death_animation', function (e)
             local timestamp_format = "%Y-%m-%d %H:%M:%S %Z"
             local timestamp_string = os.date(timestamp_format, timestamp)
             local print_message = string.format("%s: %s", name, timestamp_string)
+            local window = 900
             print(chat.header('todbot') .. chat.message(print_message));
-            local message = string.format("%s: <t:%d:T> <t:%d:R> ", name, timestamp, timestamp)
+            local message = string.format("%s: <t:%d:T> <t:%d:R> - Window <t:%d:R>", name, timestamp, timestamp, (timestamp + window))
             print(chat.header('todbot') .. chat.message(message));
-            table.insert(todbot.recent_monsters, {name = name, timestamp = timestamp})
+            table.insert(todbot.recent_monsters, {name = name, timestamp = timestamp, window = window})
         end
 
         --[[
@@ -140,7 +154,7 @@ ashita.events.register('packet_in', 'death_animation', function (e)
         end
 
         -- gui.lua uses todbot.recent_monsters to create a UI element
-        table.insert(todbot.recent_monsters, {name = name, timestamp = timestamp})
+        table.insert(todbot.recent_monsters, {name = name, timestamp = timestamp, window = mobWindow})
 
         --[[
             Autopost if its turned on
