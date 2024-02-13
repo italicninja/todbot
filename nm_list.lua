@@ -369,7 +369,7 @@ local nm_list = T{
   T{ mobid = 17395870, mobname = "Quu Domi the Gallant", window = 100 },
   T{ mobid = 17395954, mobname = "Yaa Haqa the Profane", window = 100 },
   T{ mobid = 17396134, mobname = "Yagudo Avatar", window = 100 },
-  T{ mobid = 17396137, mobname = "Tzee Xicu the Manifest", window = 100 },
+  T{ mobid = 17396137, mobname = "Tzee Xicu the Manifest", window = 259200 }, -- 3 days
   T{ mobid = 17403939, mobname = "Ellyllon", window = 100 },
   T{ mobid = 17404000, mobname = "Aquarius", window = 100 },
   T{ mobid = 17404029, mobname = "Unut", window = 100 },
@@ -449,7 +449,7 @@ local nm_list = T{
   T{ mobid = 17498516, mobname = "Zuug the Shoreleaper", window = 100 },
   T{ mobid = 17498522, mobname = "Charybdis", window = 28800 }, -- 8 hours
   T{ mobid = 17502570, mobname = "Zipacna", window = 7200 }, -- 2 hours
-  T{ mobid = 17506370, mobname = "Faust", window = 100 }, -- 2 hours
+  T{ mobid = 17506370, mobname = "Faust", window = 7200 }, -- 2 hours
   T{ mobid = 17506396, mobname = "Mother Globe", window = 7200 }, -- 2 hours
   T{ mobid = 17530881, mobname = "Epialtes", window = 100 },
   T{ mobid = 17530999, mobname = "Hippolytos", window = 100 },
@@ -530,7 +530,7 @@ local nm_list = T{
   T{ mobid = 17596507, mobname = "Skewer Sam", window = 100 },
   T{ mobid = 17596520, mobname = "Hazmat", window = 100 },
   T{ mobid = 17596628, mobname = "Hovering Hotpot", window = 100 },
-  T{ mobid = 17596720, mobname = "Serket", window = 100 },
+  T{ mobid = 17596720, mobname = "Serket", window = 75600 }, -- 21 hours
   T{ mobid = 17612859, mobname = "Mind Hoarder", window = 100 },
   T{ mobid = 17613045, mobname = "Goliath", window = 100 },
   T{ mobid = 17613047, mobname = "Goliath", window = 100 },
