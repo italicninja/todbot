@@ -3,6 +3,7 @@ local settings = require('settings')
 local chat = require('chat')
 
 local nm_list = require('nm_list')
+local horizon_nm_list = require('horizon_nm_list')
 local gui = require("gui")
 require("discord")
 
@@ -16,7 +17,8 @@ local default_settings = T{
     webhookURL = "",
     avatarURL = "",
     debug = false,
-    autoPost = false
+    autoPost = false,
+    realList = nm_list
 }
 
 local todbot = T{
@@ -124,8 +126,8 @@ ashita.events.register('packet_in', 'death_animation', function (e)
         local name = string.format("MobID `%d`", mobID)
         if entity ~= nil then
             name = entity.Name
-            if type(detectMobInListByName(name, nm_list)) ~= "boolean" then
-                mobWindow = detectMobInListByName(name, nm_list).window
+            if type(detectMobInListByName(name, todbot.settings.realList)) ~= "boolean" then
+                mobWindow = detectMobInListByName(name, todbot.settings.realList).window
                 debugPrint("'mobWindow' set to " .. mobWindow .. "for " .. name)
             end
         end
@@ -149,7 +151,7 @@ ashita.events.register('packet_in', 'death_animation', function (e)
             I have a list of NMs in nm_list.lua but I would also like for
             users to be able to configure their own lists.
         ]]
-        if( detectMobInListByName(name, nm_list) == false ) then
+        if( detectMobInListByName(name, todbot.settings.realList) == false ) then
             return
         end
 
@@ -202,6 +204,9 @@ ashita.events.register('command', 'command_cb', function(e)
         elseif table.contains({'debug'}, command_args[2]) then
             todbot.settings.debug = not todbot.settings.debug
             print(chat.header('todbot') .. chat.message("Debug: " .. tostring(todbot.settings.debug)))
+        elseif table.contains({'horizon'}, command_args[2]) then
+            print(chat.header('todbot') .. chat.message("Now using Horizon Monster Table"))
+            todbot.settings.realList = horizon_nm_list
         elseif table.contains({'insert'}, command_args[2]) then
             local fake = command_args[3] or "Fake"
             table.insert(todbot.recent_monsters, {name = fake, timestamp = os.time()})
