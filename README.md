@@ -17,6 +17,8 @@ When an NM disappears a menu will pop up showing the monster name, TOD, and butt
 
 ![PostMessage](readme/post_message.png)
 
+To toggle Horizon NM usage (They Era+ the mob windows) yse `/todbot horizon` or add to startup script
+
 ## Bugs
 - An event is triggered when morning despawns night mobs
 - An event is triggered when avatars are despawned
