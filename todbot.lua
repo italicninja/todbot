@@ -1,3 +1,5 @@
+---@diagnostic disable: undefined-field
+
 require('common')
 local settings = require('settings')
 local chat = require('chat')
