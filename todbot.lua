@@ -128,9 +128,12 @@ ashita.events.register('packet_in', 'death_animation', function (e)
         local name = string.format("MobID `%d`", mobID)
         if entity ~= nil then
             name = entity.Name
-            if type(detectMobInListByName(name, todbot.settings.realList)) ~= "boolean" then
-                mobWindow = detectMobInListByName(name, todbot.settings.realList).window
-                debugPrint("'mobWindow' set to " .. mobWindow .. "for " .. name)
+            local mobInfo = detectMobInListByName(name, todbot.settings.realList)
+            if type(mobInfo) ~= "boolean" and mobInfo.window ~= nil then
+                mobWindow = mobInfo.window
+                debugPrint("'mobWindow' set to " .. mobWindow .. " for " .. name)
+            else
+                debugPrint("mobInfo.window is nil for " .. name)
             end
         end
         --
