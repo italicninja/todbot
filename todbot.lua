@@ -145,7 +145,7 @@ ashita.events.register('packet_in', 'death_animation', function (e)
             local timestamp_format = "%Y-%m-%d %H:%M:%S %Z"
             local timestamp_string = os.date(timestamp_format, timestamp)
             local print_message = string.format("%s: %s", name, timestamp_string)
-            local window = nil
+            local window = math.random(300, 3000)
             print(chat.header('todbot') .. chat.message(print_message));
             local message = string.format("%s: <t:%d:T> <t:%d:R> - Window <t:%d:R>", name, timestamp, timestamp, (timestamp + window))
             print(chat.header('todbot') .. chat.message(message));
