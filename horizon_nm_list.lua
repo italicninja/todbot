@@ -9,7 +9,7 @@ local nm_list = T{
   T{ mobid = 16793776, mobname = "Splacknuck"},
   T{ mobid = 16797770, mobname = "Skvader"},
   T{ mobid = 16797968, mobname = "Magnotaur"},
-  T{ mobid = 16797969, mobname = "Jormungand"},
+  T{ mobid = 16797969, mobname = "Jormungand", window = 259200}, -- 3 days
   T{ mobid = 16798031, mobname = "Mountain Worm"},
   T{ mobid = 16798056, mobname = "Bonnacon"},
   T{ mobid = 16805962, mobname = "Sekhmet"},
@@ -500,7 +500,7 @@ local nm_list = T{
   T{ mobid = 17555664, mobname = "Gwyllgi"},
   T{ mobid = 17555721, mobname = "Barbastelle"},
   T{ mobid = 17555754, mobname = "Cemetery Cherry"},
-  T{ mobid = 17555763, mobname = "Vrtra"},
+  T{ mobid = 17555763, mobname = "Vrtra", window = 259200}, -- 3 days
   T{ mobid = 17559558, mobname = "Geyser Lizard"},
   T{ mobid = 17559584, mobname = "Teporingo"},
   T{ mobid = 17563749, mobname = "Maltha"},
