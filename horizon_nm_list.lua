@@ -445,7 +445,7 @@ local nm_list = T{
   T{ mobid = 17498420, mobname = "Sea Hog"},
   T{ mobid = 17498428, mobname = "Voll the Sharkfinned"},
   T{ mobid = 17498436, mobname = "Yarr the Pearleyed"},
-  T{ mobid = 17498445, mobname = "Novv the Whitehearted"},
+  T{ mobid = 17498445, mobname = "Novv the Whitehearted", window = 7200 }, -- 2 hours
   T{ mobid = 17498464, mobname = "Denn the Orcavoiced"},
   T{ mobid = 17498516, mobname = "Zuug the Shoreleaper"},
   T{ mobid = 17498522, mobname = "Charybdis", window = 28800 }, -- 8 hours
