@@ -568,7 +568,7 @@ local nm_list = T{
   T{ mobid = 17645755, mobname = "Ungur"},
   T{ mobid = 17645774, mobname = "Amikiri"},
   T{ mobid = 17649693, mobname = "Mysticmaker Profblix"},
-  T{ mobid = 17649731, mobname = "Lord of Onzozo"},
+  T{ mobid = 17649731, mobname = "Lord of Onzozo", window = 57600}, -- 16 hours
   T{ mobid = 17649761, mobname = "Peg Powler"},
   T{ mobid = 17649784, mobname = "Narasimha"},
   T{ mobid = 17649795, mobname = "Hellion"},
