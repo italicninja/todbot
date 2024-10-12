@@ -125,7 +125,7 @@ local nm_list = T{
   T{ mobid = 17183038, mobname = "Suu Xicu the Cantabile"},
   T{ mobid = 17186927, mobname = "Amanita"},
   T{ mobid = 17187047, mobname = "Fungus Beetle"},
-  T{ mobid = 17187111, mobname = "Jaggedy-Eared Jack"},
+  T{ mobid = 17187111, mobname = "Jaggedy-Eared Jack", window = 2400}, -- 40 Min
   T{ mobid = 17191044, mobname = "Rambukk"},
   T{ mobid = 17191189, mobname = "Swamfisk"},
   T{ mobid = 17191196, mobname = "Bigmouth Billy"},
