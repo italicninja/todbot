@@ -247,7 +247,7 @@ local nm_list = T{
   T{ mobid = 17285248, mobname = "Powderer Penny"},
   T{ mobid = 17285394, mobname = "Hoar-knuckled Rimberry"},
   T{ mobid = 17285460, mobname = "Bisque-heeled Sunberry"},
-  T{ mobid = 17285526, mobname = "Bright-handed Kunberry"},
+  T{ mobid = 17285526, mobname = "Bright-handed Kunberry", window = 75600}, -- 21 hours
   T{ mobid = 17289453, mobname = "Celphie"},
   T{ mobid = 17289547, mobname = "Calchas"},
   T{ mobid = 17289560, mobname = "Cactuar Cantautor"},
@@ -567,7 +567,7 @@ local nm_list = T{
   T{ mobid = 17645754, mobname = "Typhoon Wyvern"},
   T{ mobid = 17645755, mobname = "Ungur"},
   T{ mobid = 17645774, mobname = "Amikiri"},
-  T{ mobid = 17649693, mobname = "Mysticmaker Profblix"},
+  T{ mobid = 17649693, mobname = "Mysticmaker Profblix", window = 7200}, -- 2 -2.5 hours 5 min intervals
   T{ mobid = 17649731, mobname = "Lord of Onzozo", window = 57600}, -- 16 hours
   T{ mobid = 17649761, mobname = "Peg Powler"},
   T{ mobid = 17649784, mobname = "Narasimha"},
