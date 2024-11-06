@@ -5,13 +5,13 @@ local settings = require('settings')
 local chat = require('chat')
 
 local nm_list = require('nm_list')
-local horizon_nm_list = require('horizon_nm_list')
+local horizon_nm_list = require('horizon_nm_list') --[ Special List for HorizonXI mobs, as they have tweaked some repops.]
 local gui = require("gui")
 require("discord")
 
 addon.name = 'todbot'
 addon.author = 'gnubeardo || itallicninja'
-addon.version = '1.5'
+addon.version = '1.5.0'
 addon.desc = 'posts TOD of NMs to a Discord webhook'
 addon.link = 'https://github.com/ErikDahlinghaus/todbot'
 
