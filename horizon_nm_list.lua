@@ -189,7 +189,7 @@ local nm_list = T{
   T{ mobid = 17227992, mobname = "Black Triple Stars"},
   T{ mobid = 17228150, mobname = "Eldritch Edge"},
   T{ mobid = 17228236, mobname = "Drooling Daisy"},
-  T{ mobid = 17228242, mobname = "Simurgh"},
+  T{ mobid = 17228242, mobname = "Simurgh", window = 79200 },  -- 22 hours
   T{ mobid = 17231971, mobname = "Nue"},
   T{ mobid = 17232044, mobname = "Kirata"},
   T{ mobid = 17232079, mobname = "Gargantua"},
